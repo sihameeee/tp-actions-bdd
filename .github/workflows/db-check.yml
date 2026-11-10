@@ -1,0 +1,9 @@
+name: DB Check
+on: push
+jobs:
+  db:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash db/setup.sh
+      - run: PGPASSWORD=postgres psql -h localhost -U postgres -d tp -c "SELECT * FROM students;"
