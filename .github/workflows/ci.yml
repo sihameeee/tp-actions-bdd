@@ -15,7 +15,7 @@ jobs:
       - run: pytest -v
         working-directory: python-app
 
-node:
+  node:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
