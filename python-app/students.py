@@ -33,3 +33,9 @@ def get_student(conn, student_id):
         return {"name": row[0], "grade": float(row[1])}
 
 
+def average_grade(conn):
+    """Retourne la moyenne des notes, ou None s'il n'y a aucun étudiant."""
+    with conn, conn.cursor() as cur:
+        cur.execute("SELECT AVG(grade) FROM students")
+        value = cur.fetchone()[0]
+        return float(value) if value is not None else None
