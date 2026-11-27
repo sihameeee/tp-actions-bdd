@@ -14,3 +14,42 @@ jobs:
         working-directory: python-app
       - run: pytest -v
         working-directory: python-app
+
+node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash db/setup.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+        working-directory: node-app
+      - run: npm test
+        working-directory: node-app
+
+  java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash db/setup.sh
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: mvn -B package
+        working-directory: java-app
+
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash db/setup.sh
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: pdo, pdo_pgsql
+      - run: composer install --no-interaction
+        working-directory: php-app
+      - run: vendor/bin/phpunit tests
+        working-directory: php-app
